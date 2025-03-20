@@ -1,0 +1,67 @@
+name: release.yml
+on:
+  merge:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '21'
+          cache: 'maven'
+        permissions:
+          content: read
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Run Maven Tests
+        run: mvn clean test
+
+      - name: Install Dependencies
+        run: npm install semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/git @semantic-release/github
+
+      - name: Semantic Release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+      - name: Update pom.xml Version
+        if: ${{ steps.semantic.outputs.new_release_published == 'true' }}
+        run: |
+          mvn versions:set -DnewVersion=${{ steps.semantic.outputs.new_release_version }}
+          mvn versions:commit
+
+      - name: Commit and Push pom.xml Changes
+        if: ${{ steps.semantic.outputs.new_release_published == 'true' }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add pom.xml
+          git commit -m "chore(release): update pom.xml to ${{ steps.semantic.outputs.new_release_version }} [skip ci]"
+          git push origin HEAD:${{ github.ref_name }}
+
+      - name: Build and Push Docker Image
+        if: ${{ steps.semantic.outputs.new_release_published == 'true' }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          IMAGE_TAG: ${{ steps.semantic.outputs.new_release_version }}
+        run: |
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker build -t moura196/desafio_mini_mundo:$IMAGE_TAG .
+          docker push moura196/desafio_mini_mundo:$IMAGE_TAG
