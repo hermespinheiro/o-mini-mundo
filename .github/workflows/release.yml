@@ -7,6 +7,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,8 +21,6 @@ jobs:
           distribution: 'adopt'
           java-version: '21'
           cache: 'maven'
-        permissions:
-          content: read
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
