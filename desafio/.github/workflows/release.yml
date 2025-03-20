@@ -1,6 +1,6 @@
 name: release.yml
 on:
-  merge:
+  pull_request:
     branches:
       - main
 
