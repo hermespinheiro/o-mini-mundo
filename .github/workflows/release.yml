@@ -24,9 +24,11 @@ jobs:
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
+        working-directory: './desafio'
         with:
           node-version: 22
           cache: 'npm'
+        run:
 
       - name: Run Maven Tests
         run: mvn clean test
