@@ -3,12 +3,19 @@ on:
   pull_request:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
+    strategy:
+      matrix:
+        node-version: [22.]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,13 +29,17 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
-        working-directory: './desafio'
         with:
           node-version: 22
           cache: 'npm'
-        run:
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
 
       - name: Run Maven Tests
         run: mvn clean test
