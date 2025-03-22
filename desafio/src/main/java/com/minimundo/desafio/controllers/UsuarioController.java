@@ -48,4 +48,10 @@ public class UsuarioController {
 			return new ResponseEntity("Erro de Consulta", HttpStatusCode.valueOf(504));
 		}
 	}
+	
+	@Operation(summary = "Realiza login de usuário")
+	@PostMapping("/login")
+	public void loginUsuario(@RequestBody Usuario usuario) {
+		// Autenticação de usuário
+	}
 }

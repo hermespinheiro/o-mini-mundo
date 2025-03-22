@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	public static final String SECRET_JWT = "";
+	public static final String SECRET_JWT = "8e5d8848-12ac-4048-a198-9344854cd904";
 	private final AuthenticationManager authenticationManager;
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {

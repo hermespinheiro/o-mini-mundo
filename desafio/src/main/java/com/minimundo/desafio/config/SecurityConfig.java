@@ -21,11 +21,10 @@ public class SecurityConfig {
 				.csrf(c -> c.disable())
 				.authorizeHttpRequests(
 		authorizeConfig -> {
-			authorizeConfig.requestMatchers("/usuario/**").permitAll();
-			authorizeConfig.requestMatchers("/desafio/swagger-ui/**")
-				.permitAll()
-				.requestMatchers("/v3/api-docs/**")
-				.permitAll();
+			authorizeConfig.requestMatchers("/usuario/login").permitAll();
+			authorizeConfig.requestMatchers("/usuario/**").authenticated();
+			authorizeConfig.requestMatchers("/desafio/swagger-ui/**").permitAll()
+				.requestMatchers("/v3/api-docs/**").permitAll();
 		}
 				)
 				.addFilter(new JWTAuthenticationFilter(authenticationManager))
