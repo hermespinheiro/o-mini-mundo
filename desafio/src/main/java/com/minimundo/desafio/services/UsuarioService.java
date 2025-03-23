@@ -35,4 +35,8 @@ public class UsuarioService {
 		return usuarioRepository.findByNome(username);
 	}
 
+	public Optional<Usuario> buscarUsuarioPorCodigo(Long codigoUsuario) {
+		return usuarioRepository.findById(codigoUsuario);
+	}
+
 }
