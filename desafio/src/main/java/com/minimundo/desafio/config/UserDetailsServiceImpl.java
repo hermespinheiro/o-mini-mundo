@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.minimundo.desafio.entities.Usuario;
@@ -23,9 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<Usuario> usuario = usuarioService.getUsuarioAutenticacao(username);
-		if(!usuario.isPresent())
+		if (!usuario.isPresent())
 			new UsernameNotFoundException("Usuário não encontrado!");
-		
 		return new UserDetailsImpl(usuario);
 	}
 

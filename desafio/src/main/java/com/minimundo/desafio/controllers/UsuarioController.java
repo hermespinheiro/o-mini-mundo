@@ -1,6 +1,8 @@
 package com.minimundo.desafio.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.minimundo.desafio.config.JWTAuthenticationFilter;
+import com.minimundo.desafio.config.JWTValidateFilter;
 import com.minimundo.desafio.entities.Usuario;
 import com.minimundo.desafio.services.UsuarioService;
 
@@ -48,10 +53,5 @@ public class UsuarioController {
 			return new ResponseEntity("Erro de Consulta", HttpStatusCode.valueOf(504));
 		}
 	}
-	
-	@Operation(summary = "Realiza login de usuário")
-	@PostMapping("/login")
-	public void loginUsuario(@RequestBody Usuario usuario) {
-		// Autenticação de usuário
-	}
+
 }

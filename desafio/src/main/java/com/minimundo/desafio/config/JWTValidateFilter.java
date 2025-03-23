@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTValidateFilter extends BasicAuthenticationFilter {
-
+;
 	public static final String PREFIX = "Bearer ";
 	
 	public JWTValidateFilter(AuthenticationManager authenticationManager) {
@@ -61,7 +62,7 @@ public class JWTValidateFilter extends BasicAuthenticationFilter {
 
 	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		DecodedJWT decodedJWT = JWT
-				.require(Algorithm.HMAC256(JWTAuthenticationFilter.SECRET_JWT))
+				.require(Algorithm.HMAC256(JWTAuthenticationFilter.secretJwt))
 				.build().verify(token);
 		
 		String usuario = decodedJWT.getSubject();
@@ -73,9 +74,9 @@ public class JWTValidateFilter extends BasicAuthenticationFilter {
 		Set<GrantedAuthority> authorities = new HashSet();
 		authorities.add(authority);
 		
-		if (Optional.ofNullable(usuario).isPresent())
+		if (Optional.ofNullable(usuario).isPresent()) {
 			return new UsernamePasswordAuthenticationToken(usuario, null, authorities);
-		
+		}
 		return null;
 	}	
 
