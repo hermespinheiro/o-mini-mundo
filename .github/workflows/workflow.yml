@@ -30,18 +30,20 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
+        working-directory: ./o-mini-mundo/desafio
         run: mvn clean install
 
       - name: Run Maven Tests
+        working-directory: ./o-mini-mundo/desafio
         run: mvn clean test
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: '22'
 
       - name: Install dependencies
-        working-directory: ./desafio
+        working-directory: ./o-mini-mundo/desafio
         run: npm install
 
       - name: Run semantic-release
@@ -49,13 +51,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          cd desafio
+          cd o-mini-mundo/desafio
           npx semantic-release
 
       - name: Update Maven version
+        working-directory: ./o-mini-mundo/desafio
         run: mvn versions:set -DnewVersion=${{ github.ref_name }} -DgenerateBackupPoms=false
 
       - name: Display updated pom.xml
+        working-directory: ./o-mini-mundo/desafio
         run: cat pom.xml
 
       - name: Set up Docker Buildx
