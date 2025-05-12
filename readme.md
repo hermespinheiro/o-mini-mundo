@@ -7,6 +7,7 @@ O **Mini Mundo** é um projeto de laboratório destinado a testes e implementaç
 Cada avaliação requer que o candidato implemente uma ou mais **issues**, seguindo um fluxo padronizado que envolve:  
 
 ✅ **Uso de Conventional Commit e Gitflow** para organização do histórico de commits.  
+✅ **Uso container Docker para desenvolvimento** deixando a máquina do dev livre de instalações de ferramentas do projeto.  
 ✅ **Criação de uma imagem Docker** para execução do projeto após a compilação.  
 ✅ **Registro da imagem no Docker Hub** para facilitar a distribuição.  
 ✅ **Configuração de CI/CD** para automação do build e versionamento da imagem.  
@@ -15,11 +16,18 @@ Cada avaliação requer que o candidato implemente uma ou mais **issues**, segui
 
 Durante a implementação, o candidato deverá:  
 
-1️⃣ Implementar **uma ou duas issues**, conforme definido no processo de avaliação.  
-2️⃣ Seguir a convenção de commits **Conventional Commit** e o fluxo **Gitflow**.  
-3️⃣ Criar uma **imagem Docker** do projeto após a compilação.  
-4️⃣ Registrar a imagem no **Docker Hub**.  
-5️⃣ Implementar **CI/CD** para que, ao realizar um commit na branch `master` contendo uma **tag no padrão**:  
+1. Implementar tela de login, utilizando Token JWT para manter a sessão.
+2. Implementar **uma ou duas issues**, conforme definido no processo de avaliação.  
+3. Seguir a convenção de commits **Conventional Commit** e o fluxo **Gitflow**.  
+4. Criar uma **imagem Docker** do projeto após a compilação.  
+
+   O docker deve ser pensado para o ambiente de desenvolvimento, evitando que o dev tenha que fazer instalações de quaisquer ferramentas para desenvolver o projeto. Um novo dev precisa ser capaz de desenvolver o projeto apenas baixando o projeto e seguindo as instruções no **readme.md**.
+
+5. Registrar a imagem no **Docker Hub**.  
+
+   Deve ser gerada uma imagem para execução do sistema a partir do Docker Hub. É importante que seja possível fazer ajustes de configurações simples para executar a imagem de forma local. Exemplo: Configuração de banco de dados e porta. É importante que hajam instruções para tal configuração.
+
+6. Implementar **CI/CD** para que, ao realizar um commit na branch `master` contendo uma **tag no padrão**:  
 
    ```regex
    /^(v|V)?(\d+\.)?(\d+\.)?(\*|\d+).?(hf\d+|Hf\d+|HF\d+)?$/
